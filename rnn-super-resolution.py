@@ -24,13 +24,13 @@ input_tensor1 = Input(shape=(100, 1))
 
 x           = Bi(GRU(500, dropout=0.1, recurrent_dropout=0.2, activation='relu', recurrent_activation='tanh', return_sequences=True))(input_tensor1)
 #x           = Bi(GRU(300, dropout=0.1, recurrent_dropout=0.2, activation='relu', recurrent_activation='tanh', return_sequences=True))(x)
-x           = TD(Dense(2600, activation='relu'))(x)
+x           = TD(Dense(5000, activation='relu'))(x)
 x           = BN()(x)
-x           = TD(Dense(2600, activation='relu'))(x)
+x           = TD(Dense(3000, activation='relu'))(x)
 x           = BN()(x)
-x           = TD(Dense(2600, activation='relu'))(x)
+x           = TD(Dense(3000, activation='relu'))(x)
 x           = BN()(x)
-x           = TD(Dense(2600, activation='relu'))(x)
+x           = TD(Dense(500, activation='relu'))(x)
 x           = Dropout(0.10)(x)
 decoded     = TD(Dense(1, activation='linear'))(x)
 
@@ -40,14 +40,14 @@ model.compile(optimizer=Adam(lr=0.0001, decay=0.03), loss='mae')
 if '--train' in sys.argv:
   Xs, Ys = pickle.load(open('dataset.pkl', 'rb'))
   if '--resume' in sys.argv:
-    model.load_weights(sorted(glob.glob('./models/000000001_00000.000001.h5')).pop())
+    model.load_weights(sorted(glob.glob('./models/000000049_0.000002000000.h5')).pop())
   print(Xs.shape)
   decay = 0.02
-  init_rate = 0.0001
+  init_rate =  0.00001
   for i in range(50):
     model.optimizer = Adam(lr=init_rate*(1.0 - decay*i))
     print("lr is {:.12f}".format(init_rate*(1.0 - decay*i)) )
-    model.fit(Xs,Ys, shuffle=True, epochs=1, batch_size=500)
+    model.fit(Xs,Ys, shuffle=True, epochs=1, batch_size=300)
     model.save('models/{:09d}_{:.12f}.h5'.format(i,init_rate*(1.0 - decay*i)))
 
 import itertools

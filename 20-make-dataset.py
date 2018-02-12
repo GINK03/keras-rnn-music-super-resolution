@@ -5,8 +5,8 @@ from scipy.io import wavfile
 import pickle
 
 import random
-deg = np.array(wavfile.read('degradation.wav')[1], dtype=np.int16)
-org = np.array(wavfile.read('origin.wav')[1], dtype=np.int16)
+deg = np.array(wavfile.read('waves/degradation.wav')[1], dtype=np.int16)
+org = np.array(wavfile.read('waves/origin.wav')[1], dtype=np.int16)
 
 deg = deg.tolist()
 org = org.tolist()
@@ -28,7 +28,7 @@ sources, targets = [], []
 for i in range(0,len(Xs),20):
   source = sum(Xs[i:i+20],[])
   target = sum(Ys[i:i+20],[]) 
-  if random.random() > 0.5:
+  if random.random() > 0.8:
     continue
   if len(source) == 100 and len(target) == 100:
     sources.append( source )
