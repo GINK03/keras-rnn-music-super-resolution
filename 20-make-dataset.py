@@ -25,10 +25,10 @@ for index, d in enumerate(range(len(deg)-1)):
   Ys.append(ys)
 
 sources, targets = [], []
-for i in range(len(Xs)):
+for i in range(0,len(Xs),20):
   source = sum(Xs[i:i+20],[])
   target = sum(Ys[i:i+20],[]) 
-  if random.random() > 0.8:
+  if random.random() > 0.5:
     continue
   if len(source) == 100 and len(target) == 100:
     sources.append( source )
@@ -39,3 +39,18 @@ sources = np.array(sources, dtype=float).reshape((length, 100,1))/32767
 targets = np.array(targets, dtype=float).reshape((length, 100,1))/32767
 print(sources.shape)
 open('dataset.pkl', 'wb').write( pickle.dumps( (sources, targets) ) )
+
+
+sources, targets = [], []
+for i in range(0,len(Xs),20):
+  source = sum(Xs[i:i+20],[])
+  target = sum(Ys[i:i+20],[]) 
+  if len(source) == 100 and len(target) == 100:
+    sources.append( source )
+    targets.append( target )
+
+length = len(sources)
+sources = np.array(sources, dtype=float).reshape((length, 100,1))/32767
+targets = np.array(targets, dtype=float).reshape((length, 100,1))/32767
+print(sources.shape)
+open('predic.pkl', 'wb').write( pickle.dumps( (sources, targets) ) )

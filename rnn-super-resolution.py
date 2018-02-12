@@ -22,21 +22,53 @@ import re
 
 input_tensor1 = Input(shape=(100, 1))
 
-x           = Bi(LSTM(300, recurrent_dropout=0.05, recurrent_activation='tanh', return_sequences=True))(input_tensor1)
-
-
-x           = Bi(LSTM(200, recurrent_dropout=0.05, return_sequences=True))(x)
-x           = Dropout(0.10)(x)
+x           = Bi(GRU(500, dropout=0.1, recurrent_dropout=0.2, activation='relu', recurrent_activation='tanh', return_sequences=True))(input_tensor1)
+#x           = Bi(GRU(300, dropout=0.1, recurrent_dropout=0.2, activation='relu', recurrent_activation='tanh', return_sequences=True))(x)
 x           = TD(Dense(2600, activation='relu'))(x)
-x           = Dropout(0.10)(x)
+x           = BN()(x)
+x           = TD(Dense(2600, activation='relu'))(x)
+x           = BN()(x)
+x           = TD(Dense(2600, activation='relu'))(x)
+x           = BN()(x)
 x           = TD(Dense(2600, activation='relu'))(x)
 x           = Dropout(0.10)(x)
 decoded     = TD(Dense(1, activation='linear'))(x)
 
 model       = Model(input_tensor1, decoded)
-model.compile(optimizer=SGD(lr=0.005, decay=0.03, nesterov=False), loss='mae')
+model.compile(optimizer=Adam(lr=0.0001, decay=0.03), loss='mae')
 
 if '--train' in sys.argv:
   Xs, Ys = pickle.load(open('dataset.pkl', 'rb'))
+  if '--resume' in sys.argv:
+    model.load_weights(sorted(glob.glob('./models/000000001_00000.000001.h5')).pop())
   print(Xs.shape)
-  model.fit(Xs,Ys, epochs=2, batch_size=500)
+  decay = 0.02
+  init_rate = 0.0001
+  for i in range(50):
+    model.optimizer = Adam(lr=init_rate*(1.0 - decay*i))
+    print("lr is {:.12f}".format(init_rate*(1.0 - decay*i)) )
+    model.fit(Xs,Ys, shuffle=True, epochs=1, batch_size=500)
+    model.save('models/{:09d}_{:.12f}.h5'.format(i,init_rate*(1.0 - decay*i)))
+
+import itertools
+from scipy.io import wavfile
+
+if '--predict' in sys.argv:
+  model.load_weights('models/000000019_00000.000002.h5')
+  Xs, Ys = pickle.load(open('predict.pkl', 'rb'))
+
+  if '--baseline' in sys.argv: 
+    Xs = Xs*32766
+    xs = np.array(list(itertools.chain(*Xs.tolist())), dtype=np.int16)   
+    wavfile.write(f'xs_orig_{0}.wav', 4410*4, xs)
+    
+    Ys = Ys*32767
+    ys = np.array(list(itertools.chain(*Ys.tolist())), dtype=np.int16)   
+    wavfile.write(f'ys_orig_{0}.wav', 4410*4, ys)
+  
+  Yp = model.predict(Xs)
+  
+  Yp = Yp*32767
+  yps = np.array(list(itertools.chain(*Yp.tolist())), dtype=np.int16)   
+  wavfile.write(f'yp_orig_{0}.wav', 4410*4, yps)
+   
