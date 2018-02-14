@@ -23,33 +23,33 @@ import copy
 import os
 import re
 import time
-input_tensor1 = Input(shape=(500, 1))
+input_tensor1 = Input(shape=(250, 1))
 
 x1           = Bi(GRU(300, dropout=0.1, recurrent_dropout=0.2, activation='linear', recurrent_activation='tanh', return_sequences=True))(input_tensor1)
 
 x2          = Flatten()(input_tensor1)
 x2          = Dense(1000, activation='relu')(x2)
 x2          = Dense(500, activation='relu')(x2)
-x2          = RepeatVector(500)(x2)
+x2          = RepeatVector(250)(x2)
 x2          = Dense(500, activation='relu')(x2)
-x2          = Dense(600, activation='softmax')(x2)
+x2          = Dense(600, activation='linear')(x2)
 
 x3          = Multiply()([x1,x2])
 
-x           = Concatenate(axis=2)([x1,x3])
+x           = Concatenate(axis=2)([x1,x2])
 
+x           = TD(Dense(5000, activation='relu'))(x3)
 x           = TD(Dense(5000, activation='relu'))(x)
-x           = TD(Dense(5000, activation='relu'))(x)
-x           = Dropout(0.25)(x)
+x           = Dropout(0.15)(x)
 x           = TD(Dense(3000, activation='relu'))(x)
 x           = TD(Dense(3000, activation='relu'))(x)
-x           = Dropout(0.25)(x)
+x           = Dropout(0.15)(x)
 x           = TD(Dense(500, activation='relu'))(x)
 x           = TD(Dense(500, activation='relu'))(x)
 decoded     = TD(Dense(1, activation='linear'))(x)
 
 model       = Model(input_tensor1, decoded)
-model.compile(optimizer=Adam(lr=0.0001, decay=0.03), loss='mae')
+model.compile(RMSprop(lr=0.0001, decay=0.03), loss='msle')
 
 buff = None
 now  = time.strftime("%H_%M_%S")
@@ -64,12 +64,13 @@ if '--train' in sys.argv:
   if '--resume' in sys.argv:
     model.load_weights(sorted(glob.glob('./models/000000049_0.000002000000.h5')).pop())
   print(Xs.shape)
-  decay = 0.01
-  init_rate =  0.00005
-  for i in range(100):
-    model.optimizer = Adam(lr=init_rate*(1.0 - decay*i))
-    print("lr is {:.12f}".format(init_rate*(1.0 - decay*i)) )
-    model.fit(Xs,Ys, shuffle=True, validation_split=0.1, epochs=1, batch_size=70, callbacks=[batch_callback])
+  decay = 0.03
+  init_rate =  0.0001
+  for i in range(33):
+    lr = init_rate*(1.0 - decay*i)
+    model.optimizer = Adam(lr=lr)
+    print(f"lr is {lr:.12f}" )
+    model.fit(Xs,Ys, shuffle=True, validation_split=0.1, epochs=1, batch_size=160, callbacks=[batch_callback])
     loss = buff['loss']
     val_loss = buff['val_loss']
     model.save('models/{:.09f}_{:.09f}_{:09d}_{:.12f}.h5'.format(val_loss,loss,i,init_rate*(1.0 - decay*i)))
