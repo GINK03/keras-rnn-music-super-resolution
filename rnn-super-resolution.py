@@ -62,10 +62,10 @@ batch_callback = LambdaCallback(on_epoch_end=lambda batch,logs: callback(batch,l
 if '--train' in sys.argv:
   Xs, Ys = pickle.load(open('dataset.pkl', 'rb'))
   if '--resume' in sys.argv:
-    model.load_weights(sorted(glob.glob('./models/000000049_0.000002000000.h5')).pop())
+    model.load_weights(sorted(glob.glob('./models/0.003628547_0.010550566_000000032_0.000004000000.h5')).pop())
   print(Xs.shape)
   decay = 0.03
-  init_rate =  0.0001
+  init_rate =  0.00001
   for i in range(33):
     lr = init_rate*(1.0 - decay*i)
     model.optimizer = Adam(lr=lr)
@@ -73,7 +73,7 @@ if '--train' in sys.argv:
     model.fit(Xs,Ys, shuffle=True, validation_split=0.1, epochs=1, batch_size=160, callbacks=[batch_callback])
     loss = buff['loss']
     val_loss = buff['val_loss']
-    model.save('models/{:.09f}_{:.09f}_{:09d}_{:.12f}.h5'.format(val_loss,loss,i,init_rate*(1.0 - decay*i)))
+    model.save('models/{:.09f}_{:.09f}_{:09d}_{:.12f}.h5'.format(loss,val_loss,i,init_rate*(1.0 - decay*i)))
 
 import itertools
 from scipy.io import wavfile
