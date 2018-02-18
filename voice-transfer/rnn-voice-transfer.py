@@ -18,6 +18,7 @@ import numpy as np
 import random
 import sys
 import pickle
+import gzip
 import glob
 import copy
 import os
@@ -26,10 +27,11 @@ import time
 
 input_tensor1 = Input(shape=(250, 1))
 x1          = Bi(CuDNNLSTM(300, return_sequences=True))(input_tensor1)
-x           = Dense(1000, activation='relu')(x1)
+x           = Dense(1000, activation='tanh')(x1)
 x           = Bi(CuDNNLSTM(300, return_sequences=True))(x)
-x           = TD(Dense(500, activation='linear'))(x)
-decoded     = TD(Dense(1, activation='linear'))(x)
+x           = Dense(500, activation='relu')(x)
+x           = Dense(500, activation='relu')(x)
+decoded     = Dense(1, activation='linear')(x)
 
 model       = Model(input_tensor1, decoded)
 model.compile(RMSprop(lr=0.0001, decay=0.03), loss='mae')
@@ -43,12 +45,12 @@ batch_callback = LambdaCallback(on_epoch_end=lambda batch,logs: callback(batch,l
 
 
 if '--train' in sys.argv:
-  Xs, Ys = pickle.load(open('dataset.pkl', 'rb'))
+  Xs, Ys = pickle.loads(gzip.decompress(open('./dataset/000015.pkl', 'rb').read()))
   if '--resume' in sys.argv:
     model.load_weights(sorted(glob.glob('./models/*.h5')).pop(0))
   print(Xs.shape)
   decay = 0.03
-  init_rate =  0.00009
+  init_rate =  0.0001
   for i in range(33):
     lr = init_rate*(1.0 - decay*i)
     model.optimizer = Adam(lr=lr)
