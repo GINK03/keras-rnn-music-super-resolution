@@ -14,6 +14,8 @@ from keras.layers.core          import Dropout
 from keras.layers.merge         import Concatenate as Concat
 from keras.layers.noise         import GaussianNoise as GN
 from keras.layers.merge         import Dot,Multiply
+from keras.losses               import mean_squared_error
+from pathlib import Path
 import numpy as np
 import random
 import sys
@@ -25,16 +27,16 @@ import os
 import re
 import time
 
+
 input_tensor1 = Input(shape=(250, 1))
 x1          = Bi(CuDNNLSTM(300, return_sequences=True))(input_tensor1)
 x           = Dense(1000, activation='tanh')(x1)
 x           = Bi(CuDNNLSTM(300, return_sequences=True))(x)
-x           = Dense(500, activation='relu')(x)
-x           = Dense(500, activation='relu')(x)
 decoded     = Dense(1, activation='linear')(x)
 
 model       = Model(input_tensor1, decoded)
 model.compile(RMSprop(lr=0.0001, decay=0.03), loss='mae')
+
 
 buff = None
 now  = time.strftime("%H_%M_%S")
@@ -45,13 +47,26 @@ batch_callback = LambdaCallback(on_epoch_end=lambda batch,logs: callback(batch,l
 
 
 if '--train' in sys.argv:
-  Xs, Ys = pickle.loads(gzip.decompress(open('./dataset/000015.pkl', 'rb').read()))
   if '--resume' in sys.argv:
     model.load_weights(sorted(glob.glob('./models/*.h5')).pop(0))
-  print(Xs.shape)
-  decay = 0.03
-  init_rate =  0.0001
-  for i in range(33):
+  paths = [f'{path}' for path in Path('./blob/').glob('*') if f'{path}'.split('/').pop()[0] != '7'] 
+  print(paths)
+  decay = 0.01
+  init_rate =  0.0005
+  
+  for i in range(100):
+    samples = random.sample(paths, 1000)
+    Xs,Ys = None, None
+    for sample in samples:
+      if Xs is None or Ys is None: 
+        Xs, Ys = pickle.loads(gzip.decompress(open(sample, 'rb').read()))
+      else:
+        _Xs, _Ys = pickle.loads(gzip.decompress(open(sample, 'rb').read()))
+        #print(Xs.shape)
+        #print(_Xs.shape)
+        Xs = np.concatenate((Xs, _Xs), axis=0)
+        Ys = np.concatenate((Ys, _Ys), axis=0)
+        
     lr = init_rate*(1.0 - decay*i)
     model.optimizer = Adam(lr=lr)
     print(f"lr is {lr:.12f}" )
