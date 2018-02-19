@@ -62,8 +62,6 @@ if '--train' in sys.argv:
         Xs, Ys = pickle.loads(gzip.decompress(open(sample, 'rb').read()))
       else:
         _Xs, _Ys = pickle.loads(gzip.decompress(open(sample, 'rb').read()))
-        #print(Xs.shape)
-        #print(_Xs.shape)
         Xs = np.concatenate((Xs, _Xs), axis=0)
         Ys = np.concatenate((Ys, _Ys), axis=0)
         
