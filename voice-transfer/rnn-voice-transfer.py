@@ -32,6 +32,8 @@ input_tensor1 = Input(shape=(250, 1))
 x1          = Bi(CuDNNLSTM(300, return_sequences=True))(input_tensor1)
 x           = Dense(1000, activation='tanh')(x1)
 x           = Bi(CuDNNLSTM(300, return_sequences=True))(x)
+decoded     = Dense(300, activation='relu')(x)
+decoded     = Dense(300, activation='relu')(x)
 decoded     = Dense(1, activation='linear')(x)
 
 model       = Model(input_tensor1, decoded)
