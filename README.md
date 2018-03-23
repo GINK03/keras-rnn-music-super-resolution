@@ -27,6 +27,20 @@
 </p>
 <div align="center"> 図2. 全体のデータの流れ　</div>
 
+コードで書くと、こんな感じです。(Bi=Bidirection, TD=TimeDistribute)
+```python
+input_tensor1 = Input(shape=(50, 16))
+x           = Bi(CuDNNLSTM(300, return_sequences=True))(input_tensor1)
+x           = TD(Dense(500, activation='relu'))(x)
+x           = Bi(CuDNNLSTM(300, return_sequences=True))(x)
+x           = TD(Dense(500, activation='relu'))(x)
+x           = TD(Dense(20, activation='relu'))(x)
+decoded     = Dense(1, activation='linear')(x)
+print(decoded.shape)
+model       = Model(input_tensor1, decoded)
+model.compile(RMSprop(lr=0.0001, decay=0.03), loss='mae')
+```
+
 ## 実験
 
 ## 結果（誤差評価）
