@@ -28,9 +28,9 @@ input_tensor1 = Input(shape=(50, 16))
 x1          = Bi(CuDNNLSTM(300, return_sequences=True))(input_tensor1)
 x           = Dense(1000, activation='relu')(x1)
 x           = Bi(CuDNNLSTM(300, return_sequences=True))(x)
-x           = TD(Dense(500, activation='linear'))(x)
-decoded     = TD(Dense(1, activation='linear'))(x)
-
+#x           = TD(Dense(500, activation='linear'))(x)
+decoded     = Dense(1, activation='linear')(x)
+print(decoded.shape)
 model       = Model(input_tensor1, decoded)
 model.compile(RMSprop(lr=0.0001, decay=0.03), loss='mae')
 
@@ -48,7 +48,7 @@ if '--train' in sys.argv:
     model.load_weights(sorted(glob.glob('./models/*.h5')).pop(0))
   print(Xs.shape)
   decay = 0.03
-  init_rate =  0.00009
+  init_rate =  0.0005
   for i in range(33):
     lr = init_rate*(1.0 - decay*i)
     model.optimizer = Adam(lr=lr)
@@ -60,7 +60,7 @@ if '--train' in sys.argv:
 
 import itertools
 from scipy.io import wavfile
-
+ 
 if '--predict' in sys.argv:
   model.load_weights(sorted(glob.glob('models/*.h5')).pop(0))
   Xs, Ys = pickle.load(open('predict.pkl', 'rb'))
