@@ -27,16 +27,16 @@ import os
 import re
 import time
 
+width = 20
+input1      = Input(shape=(width, 1))
+x           = TD(Dense(1000, activation='linear'))(input1)
+x           = GRU(300, activation='linear', recurrent_activation='linear', return_sequences=True)(x)
+x           = Bi(GRU(300, activation='linear', recurrent_activation='linear', return_sequences=True))(x)
+x           = TD(Dense(3000, activation='linear'))(x)
+x           = TD(Dense(3000, activation='linear'))(x)
+output      = TD(Dense(1, activation='linear'))(x)
 
-input_tensor1 = Input(shape=(250, 1))
-x1          = Bi(CuDNNLSTM(300, return_sequences=True))(input_tensor1)
-x           = Dense(1000, activation='tanh')(x1)
-x           = Bi(CuDNNLSTM(300, return_sequences=True))(x)
-decoded     = Dense(300, activation='relu')(x)
-decoded     = Dense(300, activation='relu')(x)
-decoded     = Dense(1, activation='linear')(x)
-
-model       = Model(input_tensor1, decoded)
+model       = Model(input1, output)
 model.compile(RMSprop(lr=0.0001, decay=0.03), loss='mae')
 
 
@@ -52,49 +52,48 @@ if '--train' in sys.argv:
   if '--resume' in sys.argv:
     model.load_weights(sorted(glob.glob('./models/*.h5')).pop(0))
   paths = [f'{path}' for path in Path('./blob/').glob('*') if f'{path}'.split('/').pop()[0] != '7'] 
-  print(paths)
-  decay = 0.01
+  #print(paths)
+  decay = 0.0001
   init_rate =  0.0005
   
-  for i in range(100):
-    samples = random.sample(paths, 1000)
+  for i in range(1000):
+    samples = random.sample(paths, 1)
     Xs,Ys = None, None
     for sample in samples:
-      if Xs is None or Ys is None: 
-        Xs, Ys = pickle.loads(gzip.decompress(open(sample, 'rb').read()))
-      else:
-        _Xs, _Ys = pickle.loads(gzip.decompress(open(sample, 'rb').read()))
-        Xs = np.concatenate((Xs, _Xs), axis=0)
-        Ys = np.concatenate((Ys, _Ys), axis=0)
-        
-    lr = init_rate*(1.0 - decay*i)
-    model.optimizer = Adam(lr=lr)
-    print(f"lr is {lr:.12f}" )
-    model.fit(Xs,Ys, shuffle=True, validation_split=0.1, epochs=1, batch_size=240, callbacks=[batch_callback])
-    loss = buff['loss']
-    val_loss = buff['val_loss']
-    model.save('models/{:.09f}_{:.09f}_{:09d}_{:.12f}.h5'.format(loss,val_loss,i,init_rate*(1.0 - decay*i)))
+      Xs, Ys = pickle.loads(gzip.decompress(open(sample, 'rb').read()))
+      lr = init_rate*(1.0 - decay*i)
+      model.optimizer = Adam(lr=lr)
+      print(f"lr is {lr:.12f}" )
+      model.fit(x=Xs, y=Ys, shuffle=True, validation_split=0.1, epochs=100, batch_size=240, callbacks=[batch_callback])
+      loss = buff['loss']
+      val_loss = buff['val_loss']
+
+    if i%50 == 0:
+      model.save('models/{:.09f}_{:.09f}_{:09d}_{:.12f}.h5'.format(loss,val_loss,i,init_rate*(1.0 - decay*i)))
 
 import itertools
 from scipy.io import wavfile
 
 if '--predict' in sys.argv:
-  model.load_weights(sorted(glob.glob('models/*.h5')).pop(0))
-  Xs, Ys = pickle.load(open('predict.pkl', 'rb'))
+  model.load_weights(sorted(glob.glob('models/0.228663650_0.097335294_000000900_0.000010000000.h5')).pop(0))
+  Xs, Ys = pickle.loads(gzip.decompress(open('predicts/d5c8df5e9071b6054e735473d92016b435dc73831c08ab51626b0826dd6b2767.pkl', 'rb').read()))
 
   S = 2
   if '--baseline' in sys.argv: 
-    Xs = Xs*32766
+    Xs = Xs*10000
     xs = np.array(list(itertools.chain(*Xs.tolist())), dtype=np.int16)   
-    wavfile.write(f'xs_orig_{S}.wav', 4410*4, xs)
+    wavfile.write(f'xs_orig_{S}.wav', 4410*10, xs)
     
-    Ys = Ys*32767
+    Ys = Ys*10000
+    for y in Ys.tolist():
+      print(y)
     ys = np.array(list(itertools.chain(*Ys.tolist())), dtype=np.int16)   
-    wavfile.write(f'ys_orig_{S}.wav', 4410*4, ys)
+    wavfile.write(f'ys_orig_{S}.wav', 4410*10, ys)
   else: 
     Yp = model.predict(Xs)
-    
-    Yp = Yp*32767
+    Yp = Yp*10000
+    for y in Yp.tolist():
+      print(y)
     yps = np.array(list(itertools.chain(*Yp.tolist())), dtype=np.int16)   
-    wavfile.write(f'yp_orig_{S}.wav', 4410*4, yps)
+    wavfile.write(f'yp_orig_{S}.wav', 4410*10, yps)
    
