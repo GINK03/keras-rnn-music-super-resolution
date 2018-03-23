@@ -74,7 +74,7 @@ $ python3 eval.py
 15kHzデータ                               2274.789324513194
 ディープラーニングでアップサンプリングしたデータ 1405.8059034796117
 ```
-値が少ないほうがいいのですが、たしかに、15kHzのデータそのものより音質は改善していることがわかりました。  
+値が少ないほうがいいのですが、たしかに、22kHzのデータそのものより音質は改善していることがわかりました。  
 
 
 ## 結果（聞いてみる）
@@ -83,11 +83,11 @@ $ python3 eval.py
 
 https://soundcloud.com/sgemuj01eczp/origin
 
-**ダウンサンプル15kHz**  
+**ダウンサンプル22kHz**  
 
 https://soundcloud.com/sgemuj01eczp/degradation
 
-**機械学習でアップサンプリング15khz->44khz**   
+**機械学習でアップサンプリング22khz->44khz**   
 
 https://soundcloud.com/sgemuj01eczp/wave-predict-44khz
 
