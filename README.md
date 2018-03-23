@@ -91,6 +91,8 @@ https://soundcloud.com/sgemuj01eczp/degradation
 
 https://soundcloud.com/sgemuj01eczp/wave-predict-44khz
 
+よく聞き分けると、ノイズのような音源が、ところどころ機械学習では混じっていることがわかるかと思います(課題)  
+
 ## まとめ
 
 
