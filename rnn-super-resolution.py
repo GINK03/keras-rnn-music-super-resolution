@@ -24,12 +24,10 @@ import os
 import re
 import time
 
-input_tensor1 = Input(shape=(250, 1))
+input_tensor1 = Input(shape=(50, 16))
 x1          = Bi(CuDNNLSTM(300, return_sequences=True))(input_tensor1)
 x           = Dense(1000, activation='relu')(x1)
 x           = Bi(CuDNNLSTM(300, return_sequences=True))(x)
-x           = TD(Dense(3000, activation='linear'))(x)
-x           = TD(Dense(1000, activation='linear'))(x)
 x           = TD(Dense(500, activation='linear'))(x)
 decoded     = TD(Dense(1, activation='linear'))(x)
 
@@ -45,7 +43,7 @@ batch_callback = LambdaCallback(on_epoch_end=lambda batch,logs: callback(batch,l
 
 
 if '--train' in sys.argv:
-  Xs, Ys = pickle.load(open('dataset.pkl', 'rb'))
+  Xs, Ys = np.load('Xs.npy'), np.load('Ys.npy')
   if '--resume' in sys.argv:
     model.load_weights(sorted(glob.glob('./models/*.h5')).pop(0))
   print(Xs.shape)
