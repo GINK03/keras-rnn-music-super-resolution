@@ -9,6 +9,11 @@
 
 通常、YouTubeでは44kHz/16bitで音楽が再生されるので、及ばないのですが、15kHz/16bitの音源を44kHz/16bitに引き上げてみます。  
 
+<p align="center">
+  <img width="450px" src="https://user-images.githubusercontent.com/4949982/37853846-c2b195ca-2f2b-11e8-9af8-db0cd526b819.png">
+</p>
+<div align="center"> 図1. 今回やりたいこと </div>
+
 ## 今回使用したネットワーク
 
 ## 実験
