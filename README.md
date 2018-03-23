@@ -23,9 +23,10 @@
 ネットワークでは、双方向のLSTMのネットワークを用いました。  
 
 <p align="center">
-  <img width="450px" src="https://user-images.githubusercontent.com/4949982/37854467-625d8c76-2f2e-11e8-8089-103202987a82.png">
+  <img width="650px" src="https://user-images.githubusercontent.com/4949982/37854467-625d8c76-2f2e-11e8-8089-103202987a82.png">
 </p>
 <div align="center"> 図2. 全体のデータの流れ　</div>
+
 ## 実験
 
 ## 結果（誤差評価）
