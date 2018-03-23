@@ -25,7 +25,7 @@ wavfile.write('origin.wav', 44100, nextwav)
 nextwav = []
 Xs = []
 
-DOWN = 2
+DOWN = 3
 for index, w in enumerate(wav.tolist()):
   if index%DOWN == 0:
     wabs = w + 32768
