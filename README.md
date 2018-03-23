@@ -42,7 +42,16 @@ model.compile(RMSprop(lr=0.0001, decay=0.03), loss='mae')
 ```
 
 ## 実験
-ボーカロイドの曲である[「wave」をreworuさんが歌ったもの](https://www.youtube.com/watch?v=36SxEHQeDi8)を利用しました
+ボーカロイドの曲である[「wave」をreworuさんが歌ったもの](https://www.youtube.com/watch?v=36SxEHQeDi8)を利用しました  
+
+YouTubeからwaveファイルを取り出すことはできるので、ダウンロードしたら、入力用に15kHzにダウンサンプルします。  
+```console
+$ python3 10-scan.py
+```
+オリジナルの曲と、ダウンサンプルした曲のペアのデータ・セットを作成してnumpyに変換します  
+```console
+$ python3 20-make-dataset.py
+```
 
 ## 結果（誤差評価）
 
