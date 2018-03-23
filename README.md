@@ -52,6 +52,19 @@ $ python3 10-scan.py
 ```console
 $ python3 20-make-dataset.py
 ```
+**学習**  
+
+GTX1080Tiで二時間程度です  
+
+(音楽の前８割を学習に使い、残り２割を評価に回します)
+```console
+$ python3 rnn-super-resolution.py --train
+```
+
+**アップサンプリング**  
+```console
+$ python3 rnn-super-resolution.py --predict
+```
 
 ## 結果（誤差評価）
 
