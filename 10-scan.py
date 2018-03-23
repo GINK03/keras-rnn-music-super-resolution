@@ -24,17 +24,18 @@ wavfile.write('origin.wav', 44100, nextwav)
 
 nextwav = []
 Xs = []
+
+DOWN = 2
 for index, w in enumerate(wav.tolist()):
-  if index%2 == 0:
+  if index%DOWN == 0:
     wabs = w + 32768
     wabs = f'{wabs:016b}'
-    Xs.append( wabs )
-    Xs.append( wabs )
-    nextwav.append(w)
-    nextwav.append(w)
+    for d in range(DOWN):
+      Xs.append( wabs )
+      nextwav.append(w)
 nextwav = np.array(nextwav,dtype=np.int16 )
 print(nextwav.shape)
-wavfile.write('degradation.wav', 44100//2, nextwav)
+wavfile.write('degradation.wav', 44100, nextwav)
 
 open('xs_ys.pkl', 'wb').write( pickle.dumps( (Xs, Ys) ) )
 
