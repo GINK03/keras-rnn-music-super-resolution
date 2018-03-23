@@ -14,9 +14,9 @@ print('wave max', np.max(wav))
 nextwav = []
 Ys = []
 for index, w in enumerate(wav.tolist()):
-  if w != 0 :
-    nextwav.append(w)
-    Ys.append( w/32768 )
+  #if w != 0 :
+  nextwav.append(w)
+  Ys.append( (w+32768)/32768 )
 nextwav = np.array(nextwav,dtype=np.int16 )
 print(nextwav.shape)
 wavfile.write('origin.wav', 44100, nextwav)
@@ -30,6 +30,7 @@ for index, w in enumerate(wav.tolist()):
     wabs = f'{wabs:016b}'
     Xs.append( wabs )
     Xs.append( wabs )
+    nextwav.append(w)
     nextwav.append(w)
 nextwav = np.array(nextwav,dtype=np.int16 )
 print(nextwav.shape)

@@ -23,7 +23,7 @@ for i in range(0, len(cross), 50):
     _Ys.append( y )
   try:
     _Xs = np.array(_Xs).reshape( (50, 16) ) 
-    _Ys = np.array(_Ys).reshape( (50, ) )
+    _Ys = np.array(_Ys).reshape( (50, 1) )
   except Exception as ex:
     print(ex)
     continue
