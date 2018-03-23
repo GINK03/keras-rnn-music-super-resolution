@@ -79,6 +79,15 @@ $ python3 eval.py
 
 ## 結果（聞いてみる）
 
+**オリジナル44khz**
+https://soundcloud.com/sgemuj01eczp/origin
+
+**ダウンサンプル15kHz**  
+https://soundcloud.com/sgemuj01eczp/degradation
+
+**機械学習でアップサンプリング15khz->44khz**   
+https://soundcloud.com/sgemuj01eczp/wave-predict-44khz
+
 ## まとめ
 
 
