@@ -7,10 +7,10 @@
 ## High Resolution
 ハイレゾは96kHz/24bitという高いサンプリング数と、高い解像度を誇ります。  
 
-通常、YouTubeでは44kHz/16bitで音楽が再生されるので、及ばないのですが、15kHz/16bitの音源を44kHz/16bitに引き上げてみます。  
+通常、YouTubeでは44kHz/16bitで音楽が再生されるので、及ばないのですが、22kHz/16bitの音源を44kHz/16bitに引き上げてみます。  
 
 <p align="center">
-  <img width="450px" src="https://user-images.githubusercontent.com/4949982/37853846-c2b195ca-2f2b-11e8-9af8-db0cd526b819.png">
+  <img width="450px" src="https://user-images.githubusercontent.com/4949982/37856908-79a2b6de-2f3a-11e8-9ee7-885d2492a313.png">
 </p>
 <div align="center"> 図1. 今回やりたいこと </div>
 
@@ -23,7 +23,7 @@
 ネットワークでは、双方向のLSTMのネットワークを用いました。  
 
 <p align="center">
-  <img width="650px" src="https://user-images.githubusercontent.com/4949982/37854467-625d8c76-2f2e-11e8-8089-103202987a82.png">
+  <img width="650px" src="https://user-images.githubusercontent.com/4949982/37856898-6adc7950-2f3a-11e8-823e-5090eb81da1e.png">
 </p>
 <div align="center"> 図2. 全体のデータの流れ　</div>
 
