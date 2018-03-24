@@ -53,6 +53,8 @@ model.compile(RMSprop(lr=0.0001, decay=0.03), loss='mae')
 
 YouTubeからwaveファイルを取り出すことはできるので、ダウンロードしたら、入力用に22kHzにダウンサンプルします。(著作権の関係で音源は添付しませんのでご自身でご用意してください)  
 
+[https://github.com/GINK03/keras-rnn-music-super-resolution]
+
 ```console
 $ python3 10-scan.py
 ```
