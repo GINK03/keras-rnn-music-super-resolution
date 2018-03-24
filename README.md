@@ -98,5 +98,9 @@ https://soundcloud.com/sgemuj01eczp/yp-orig-5
 
 オーディオ沼は怖いのでほどほどにしておきたいですが、簡単にできるので、やってみる価値はあるかもしれません。  
 
-## オカルト
+最後に実は全然別のドメインで、audio super resolutionというものをやってらっしゃる方を発見して、これは、音を画像のように捉えるようです[2]。  
+
+
+## 参考文献＆オカルト
 - [1] [mp3音源を“アップサンプリング”で高音質化できるか試してみた](https://kakakumag.com/pc-smartphone/?id=9459)
+- [2] [AUDIO SUPER-RESOLUTION USING NEURAL NETS](https://arxiv.org/pdf/1708.00853.pdf)
