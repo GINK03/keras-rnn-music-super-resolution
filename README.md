@@ -51,7 +51,8 @@ model.compile(RMSprop(lr=0.0001, decay=0.03), loss='mae')
 ## 実験
 ボーカロイドの曲である[「wave」をreworuさんが歌ったもの](https://www.youtube.com/watch?v=36SxEHQeDi8)を利用しました  
 
-YouTubeからwaveファイルを取り出すことはできるので、ダウンロードしたら、入力用に15kHzにダウンサンプルします。  
+YouTubeからwaveファイルを取り出すことはできるので、ダウンロードしたら、入力用に22kHzにダウンサンプルします。(著作権の関係で音源は添付しませんのでご自身でご用意してください)  
+
 ```console
 $ python3 10-scan.py
 ```
