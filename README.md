@@ -85,7 +85,7 @@ https://soundcloud.com/sgemuj01eczp/origin
 
 **ダウンサンプル22kHz**  
 
-https://soundcloud.com/sgemuj01eczp/degradation
+https://soundcloud.com/sgemuj01eczp/degradation-1
 
 **機械学習でアップサンプリング22khz->44khz**   
 
