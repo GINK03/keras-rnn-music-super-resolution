@@ -69,10 +69,10 @@ $ python3 rnn-super-resolution.py --predict
 ぶっちゃけ、聞いても定性的な評価になってしまうというのが本音なので、テストデータにおけるMean Absolute Error(平均絶対誤差)をみて良くなっていることを確認します。  
 
 ```console
-$ python3 eval.py 
+$ python3 eval.py              
 オリジナルデータ                            0.0
-15kHzデータ                               2274.789324513194
-ディープラーニングでアップサンプリングしたデータ 1405.8059034796117
+22kHzデータ                               1260.0746398721526
+ディープラーニングでアップサンプリングしたデータ 610.2184827578526
 ```
 値が少ないほうがいいのですが、たしかに、22kHzのデータそのものより音質は改善していることがわかりました。  
 
@@ -89,7 +89,7 @@ https://soundcloud.com/sgemuj01eczp/degradation
 
 **機械学習でアップサンプリング22khz->44khz**   
 
-https://soundcloud.com/sgemuj01eczp/wave-predict-44khz
+https://soundcloud.com/sgemuj01eczp/yp-orig-5
 
 よく聞き分けると、ノイズのような音源が、ところどころ機械学習では混じっていることがわかるかと思います(課題)  
 
