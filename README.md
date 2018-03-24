@@ -102,5 +102,7 @@ https://soundcloud.com/sgemuj01eczp/yp-orig-5
 
 
 ## 参考文献＆オカルト
-- [1] [mp3音源を“アップサンプリング”で高音質化できるか試してみた](https://kakakumag.com/pc-smartphone/?id=9459)
+- [1] [mp3音源を“アップサンプリング”で高音質化できるか試してみた](https://kakakumag.com/pc-smartphone/?id=9459) 
+（データフォーマットを変形しただけでアップサンプリングできていないように見える）  
+
 - [2] [AUDIO SUPER-RESOLUTION USING NEURAL NETS](https://arxiv.org/pdf/1708.00853.pdf)
