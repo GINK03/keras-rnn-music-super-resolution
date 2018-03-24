@@ -25,7 +25,7 @@
 
 25サンプルから、44kHzで本来存在していただろう、音の波形を補完します。  
 
-人の声や楽器など、ある程度のレンジを取って様子を換算して音の並ごとに特性があるとの仮説があるからです。  
+人の声や楽器など、ある程度のレンジを取って音波をみることで、楽器や声などの音の並ごとに特性が獲得できるとの仮説があるからです。  
 
 ネットワークでは、双方向のLSTMのネットワークを用いました。  
 
@@ -91,15 +91,15 @@ $ python3 eval.py
 
 **オリジナル44khz** .
 
-https://soundcloud.com/sgemuj01eczp/origin
+[https://soundcloud.com/sgemuj01eczp/origin]
 
 **ダウンサンプル22kHz**  
 
-https://soundcloud.com/sgemuj01eczp/degradation-1
+[https://soundcloud.com/sgemuj01eczp/degradation-1]
 
 **機械学習でアップサンプリング22khz->44khz**   
 
-https://soundcloud.com/sgemuj01eczp/yp-orig-5
+[https://soundcloud.com/sgemuj01eczp/yp-orig-5]
 
 よく聞き分けると、ノイズのような音源が、ところどころ機械学習では混じっていることがわかるかと思います(課題)  
 
